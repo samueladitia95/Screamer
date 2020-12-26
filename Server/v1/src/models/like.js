@@ -16,8 +16,22 @@ module.exports = (sequelize, DataTypes) => {
   }
   Like.init(
     {
-      UserId: DataTypes.STRING,
-      PostId: DataTypes.STRING,
+      UserId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Like User ID is Required" },
+          notNull: { msg: "Like User ID is Required" },
+        },
+      },
+      PostId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Like User ID is Required" },
+          notNull: { msg: "Like User ID is Required" },
+        },
+      },
     },
     {
       sequelize,

@@ -19,9 +19,30 @@ module.exports = (sequelize, DataTypes) => {
   }
   Post.init(
     {
-      title: DataTypes.STRING,
-      content: DataTypes.STRING,
-      UserId: DataTypes.STRING,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Post Title is Required" },
+          notNull: { msg: "Post Title is Required" },
+        },
+      },
+      content: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Post Content is Required" },
+          notNull: { msg: "Post COntent is Required" },
+        },
+      },
+      UserId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Post User ID is Required" },
+          notNull: { msg: "Post User ID is Required" },
+        },
+      },
     },
     {
       sequelize,
