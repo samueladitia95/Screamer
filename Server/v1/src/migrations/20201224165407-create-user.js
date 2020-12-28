@@ -19,7 +19,6 @@ module.exports = {
       },
       full_name: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       bio: {
         type: Sequelize.STRING,

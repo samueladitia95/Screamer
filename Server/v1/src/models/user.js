@@ -66,8 +66,6 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         beforeCreate: (user) => {
           user.password = encryptPassword(user.password);
-          const randomNumber = Math.floor(Math.random() * 1000000) + 50000;
-          user.profile_pic = `https://avatars.dicebear.com/4.5/api/bottts/${randomNumber}.svg`;
         },
       },
       sequelize,
