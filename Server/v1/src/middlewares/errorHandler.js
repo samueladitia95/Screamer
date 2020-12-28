@@ -1,44 +1,35 @@
 "use strict";
 
 const errorHandler = (err, req, res, next) => {
-  let statusCode = 500;
-
-  let message = "Internal Server Error!";
+  let status = 500;
+  let message = err.message;
 
   switch (err.name) {
     case "SequelizeValidationError":
-      statusCode = 400;
-      message = err.errors[0].message;
-      break;
-    case "SequelizeDatabaseError": //constraint allowNull :false
-      if (err.parent.code === "23502") {
-        statusCode = 400;
-        message = err.errors[0].message;
-      }
+      status = 400;
       break;
     case "SequelizeUniqueConstraintError":
-      statusCode = 400;
-      message = `${err.errors[0].value} already exists`;
+      status = 400;
+      message = err.errors[0].message;
+    case "BadRequest":
+      status = 400;
       break;
-    case "SequelizeForeignKeyConstraintError":
-      statusCode = 400;
-      message = `ForeignKey error!`;
-      break;
-    case "NotFoundError":
-    case "ForbiddenError":
-    case "UnauthorizedError":
-    case "BadRequestError":
-      statusCode = err.statusCode;
-      message = err.message;
+    case "Unauthorized":
+      status = 401;
       break;
     case "JsonWebTokenError":
-    case "TokenExpiredError":
-      statusCode = 401;
-      message = "Failed to authenticate";
+      staus = 401;
+      message = "Failed to Authenticate";
+      break;
+    case "Forbidden":
+      status = 403;
+      break;
+    case "NotFound":
+      status = 404;
       break;
   }
 
-  res.status(statusCode).json({ message });
+  res.status(status).json({ message });
 };
 
 module.exports = errorHandler;

@@ -21,11 +21,8 @@ class UserController {
       });
 
       const sentUserData = {
-        status: 201,
-        data: {
-          email: newUser.email,
-          profile_pic: newUser.profile_pic,
-        },
+        email: newUser.email,
+        profile_pic: newUser.profile_pic,
       };
       return res.status(201).json(sentUserData);
     } catch (err) {
@@ -42,8 +39,7 @@ class UserController {
       });
       if (!user || !comparePassword(password, user.password || "")) {
         return next({
-          statusCode: 401,
-          name: "UnauthorizedError",
+          name: "Unauthorized",
           message: "Wrong Email/Password",
         });
       }
@@ -58,9 +54,8 @@ class UserController {
       const access_token = createToken({ ...foundUser, id: user.id });
 
       const sentUserData = {
-        status: 201,
         access_token,
-        data: { ...foundUser },
+        user_data: { ...foundUser },
       };
       return res.status(201).json(sentUserData);
     } catch (err) {
@@ -79,14 +74,13 @@ class UserController {
       };
       const updatedUser = await User.update(updatedUserDetail, { where: { id } });
       return updatedUser[0]
-        ? res.status(200).json({ status: 200, message: "Update Detail Successful" })
+        ? res.status(200).json({ message: "Update Detail Successful" })
         : next({
-            statusCode: 400,
-            name: "NotFoundError",
+            name: "NotFound",
             message: "User not Found",
           });
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
 }
