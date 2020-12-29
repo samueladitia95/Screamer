@@ -5,10 +5,11 @@ const user = require("./user");
 const post = require("./post");
 const comment = require("./comment");
 const like = require("./like");
+const { authentication } = require("../middlewares/security");
 
 router.use("/users", user);
 
-//! authencation here
+router.use(authentication);
 
 router.use("/posts", post);
 router.use("/comments", comment);

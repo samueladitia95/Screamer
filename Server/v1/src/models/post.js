@@ -19,6 +19,17 @@ module.exports = (sequelize, DataTypes) => {
   }
   Post.init(
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+        unique: true,
+        validate: {
+          notEmpty: { msg: "id is Required" },
+          notNull: { msg: "id is Required" },
+        },
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false,
