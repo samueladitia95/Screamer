@@ -45,13 +45,14 @@ class UserController {
       }
 
       const foundUser = {
+        id: user.id,
         email: user.email,
         full_name: user.full_name,
         bio: user.bio,
         location: user.location,
         profile_pic: user.profile_pic,
       };
-      const access_token = createToken({ ...foundUser, id: user.id });
+      const access_token = createToken({ ...foundUser });
 
       const sentUserData = {
         access_token,

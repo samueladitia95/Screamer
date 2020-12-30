@@ -1,14 +1,22 @@
 "use strict";
-const { Post, User } = require("../models");
+const { Post, User, Comment, sequelize, Like } = require("../models");
 
 class PostController {
   static async getAll(req, res, next) {
     try {
       const posts = await Post.findAll({
-        limit: 20,
+        // limit: 20,
         order: [["updatedAt", "DESC"]],
-        attributes: { exclude: ["createdAt", "UserId"] },
-        include: { model: User, attributes: { exclude: ["password", "createdAt", "updatedAt"] } },
+        include: [
+          { model: User, attributes: { exclude: ["password", "createdAt", "updatedAt", "bio", "location"] } },
+          { model: Comment, attributes: [] },
+          { model: Like, attributes: { exclude: ["createdAt", "updatedAt"] } },
+        ],
+        attributes: {
+          exclude: ["createdAt", "UserId"],
+          include: [[sequelize.fn("COUNT", sequelize.col("Comments.id")), "commentCount"]],
+        },
+        group: ["Post.id", "User.id", "Likes.id"],
       });
       return res.status(200).json(posts);
     } catch (err) {

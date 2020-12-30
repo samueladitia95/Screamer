@@ -16,6 +16,17 @@ module.exports = (sequelize, DataTypes) => {
   }
   Like.init(
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+        unique: true,
+        validate: {
+          notEmpty: { msg: "id is Required" },
+          notNull: { msg: "id is Required" },
+        },
+      },
       UserId: {
         type: DataTypes.UUID,
         allowNull: false,
